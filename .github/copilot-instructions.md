@@ -2,7 +2,11 @@
 
 > **Note**: This file is located at `.github/copilot-instructions.md` and is used by GitHub Copilot to understand project context.
 
-This file contains high-level instructions for GitHub Copilot to follow when generating code for this project. For detailed guidance, refer to the documentation files in the `docs/` directory.
+This file contains high-level instructions for GitHub Copilot to follow when generating code for this project. For detailed guidance, refer to the documentation files in the `docs/` directory and the project constitution.
+
+## Project Constitution
+
+**[Read the Project Constitution](.specify/memory/constitution.md)** - This document contains the non-negotiable principles and standards that govern all development in this project. All code generation must comply with these constitutional principles.
 
 ## Documentation Overview
 
