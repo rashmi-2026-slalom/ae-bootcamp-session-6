@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const Database = require('better-sqlite3');
+const TodoService = require('./services/todoService');
 
 // Initialize express app
 const app = express();
@@ -25,6 +26,9 @@ db.exec(`
   )
 `);
 
+// Initialize TodoService
+const todoService = new TodoService(db);
+
 // Insert some initial data
 const initialTodos = [
   { title: 'Learn React', dueDate: '2025-12-15', completed: 0 },
@@ -43,7 +47,7 @@ console.log('In-memory database initialized with sample todos');
 // API Routes
 app.get('/api/todos', (req, res) => {
   try {
-    const todos = db.prepare('SELECT * FROM todos ORDER BY createdAt DESC').all();
+    const todos = todoService.getAllTodos();
     res.json(todos);
   } catch (error) {
     console.error('Error fetching todos:', error);
@@ -54,19 +58,16 @@ app.get('/api/todos', (req, res) => {
 app.get('/api/todos/:id', (req, res) => {
   try {
     const { id } = req.params;
-
-    if (!id || isNaN(parseInt(id))) {
-      return res.status(400).json({ error: 'Valid todo ID is required' });
-    }
-
-    const todo = db.prepare('SELECT * FROM todos WHERE id = ?').get(id);
+    const todo = todoService.getTodoById(id);
     if (!todo) {
       return res.status(404).json({ error: 'Todo not found' });
     }
-
     res.json(todo);
   } catch (error) {
     console.error('Error fetching todo:', error);
+    if (error.message.includes('Valid todo ID is required')) {
+      return res.status(400).json({ error: error.message });
+    }
     res.status(500).json({ error: 'Failed to fetch todo' });
   }
 });
@@ -74,23 +75,13 @@ app.get('/api/todos/:id', (req, res) => {
 app.post('/api/todos', (req, res) => {
   try {
     const { title, dueDate } = req.body;
-
-    if (!title || typeof title !== 'string' || title.trim() === '') {
-      return res.status(400).json({ error: 'Todo title is required' });
-    }
-
-    if (title.length > 255) {
-      return res.status(400).json({ error: 'Todo title must not exceed 255 characters' });
-    }
-
-    const stmt = db.prepare('INSERT INTO todos (title, dueDate, completed) VALUES (?, ?, ?)');
-    const result = stmt.run(title.trim(), dueDate || null, 0);
-    const id = result.lastInsertRowid;
-
-    const newTodo = db.prepare('SELECT * FROM todos WHERE id = ?').get(id);
+    const newTodo = todoService.createTodo(title, dueDate);
     res.status(201).json(newTodo);
   } catch (error) {
     console.error('Error creating todo:', error);
+    if (error.message.includes('required') || error.message.includes('exceed')) {
+      return res.status(400).json({ error: error.message });
+    }
     res.status(500).json({ error: 'Failed to create todo' });
   }
 });
@@ -99,34 +90,16 @@ app.put('/api/todos/:id', (req, res) => {
   try {
     const { id } = req.params;
     const { title, dueDate } = req.body;
-
-    if (!id || isNaN(parseInt(id))) {
-      return res.status(400).json({ error: 'Valid todo ID is required' });
-    }
-
-    const existingTodo = db.prepare('SELECT * FROM todos WHERE id = ?').get(id);
-    if (!existingTodo) {
-      return res.status(404).json({ error: 'Todo not found' });
-    }
-
-    if (title !== undefined && (typeof title !== 'string' || title.trim() === '')) {
-      return res.status(400).json({ error: 'Todo title must be a non-empty string' });
-    }
-
-    if (title !== undefined && title.length > 255) {
-      return res.status(400).json({ error: 'Todo title must not exceed 255 characters' });
-    }
-
-    const newTitle = title !== undefined ? title.trim() : existingTodo.title;
-    const newDueDate = dueDate !== undefined ? dueDate : existingTodo.dueDate;
-
-    const stmt = db.prepare('UPDATE todos SET title = ?, dueDate = ? WHERE id = ?');
-    stmt.run(newTitle, newDueDate || null, id);
-
-    const updatedTodo = db.prepare('SELECT * FROM todos WHERE id = ?').get(id);
+    const updatedTodo = todoService.updateTodo(id, { title, dueDate });
     res.json(updatedTodo);
   } catch (error) {
     console.error('Error updating todo:', error);
+    if (error.message.includes('not found')) {
+      return res.status(404).json({ error: error.message });
+    }
+    if (error.message.includes('required') || error.message.includes('exceed') || error.message.includes('non-empty')) {
+      return res.status(400).json({ error: error.message });
+    }
     res.status(500).json({ error: 'Failed to update todo' });
   }
 });
@@ -134,24 +107,16 @@ app.put('/api/todos/:id', (req, res) => {
 app.patch('/api/todos/:id/toggle', (req, res) => {
   try {
     const { id } = req.params;
-
-    if (!id || isNaN(parseInt(id))) {
-      return res.status(400).json({ error: 'Valid todo ID is required' });
-    }
-
-    const existingTodo = db.prepare('SELECT * FROM todos WHERE id = ?').get(id);
-    if (!existingTodo) {
-      return res.status(404).json({ error: 'Todo not found' });
-    }
-
-    const newCompleted = existingTodo.completed ? 0 : 1;
-    const stmt = db.prepare('UPDATE todos SET completed = ? WHERE id = ?');
-    stmt.run(newCompleted, id);
-
-    const updatedTodo = db.prepare('SELECT * FROM todos WHERE id = ?').get(id);
+    const updatedTodo = todoService.updateTodoStatus(id);
     res.json(updatedTodo);
   } catch (error) {
     console.error('Error toggling todo status:', error);
+    if (error.message.includes('not found')) {
+      return res.status(404).json({ error: error.message });
+    }
+    if (error.message.includes('Valid todo ID is required')) {
+      return res.status(400).json({ error: error.message });
+    }
     res.status(500).json({ error: 'Failed to toggle todo status' });
   }
 });
@@ -159,26 +124,16 @@ app.patch('/api/todos/:id/toggle', (req, res) => {
 app.delete('/api/todos/:id', (req, res) => {
   try {
     const { id } = req.params;
-
-    if (!id || isNaN(parseInt(id))) {
-      return res.status(400).json({ error: 'Valid todo ID is required' });
-    }
-
-    const existingTodo = db.prepare('SELECT * FROM todos WHERE id = ?').get(id);
-    if (!existingTodo) {
-      return res.status(404).json({ error: 'Todo not found' });
-    }
-
-    const deleteStmt = db.prepare('DELETE FROM todos WHERE id = ?');
-    const result = deleteStmt.run(id);
-
-    if (result.changes > 0) {
-      res.json({ message: 'Todo deleted successfully', id: parseInt(id) });
-    } else {
-      res.status(404).json({ error: 'Todo not found' });
-    }
+    const deletedTodo = todoService.deleteTodo(id);
+    res.json({ message: 'Todo deleted successfully', id: parseInt(id) });
   } catch (error) {
     console.error('Error deleting todo:', error);
+    if (error.message.includes('not found')) {
+      return res.status(404).json({ error: error.message });
+    }
+    if (error.message.includes('Valid todo ID is required')) {
+      return res.status(400).json({ error: error.message });
+    }
     res.status(500).json({ error: 'Failed to delete todo' });
   }
 });

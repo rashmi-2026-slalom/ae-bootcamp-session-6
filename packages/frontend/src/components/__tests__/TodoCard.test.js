@@ -99,4 +99,95 @@ describe('TodoCard Component', () => {
     
     expect(screen.queryByText(/Due:/)).not.toBeInTheDocument();
   });
+
+  // Overdue tests
+  describe('Overdue visual indicators', () => {
+    it('should render clock icon and amber styling for overdue todos', () => {
+      const overdueTodo = { ...mockTodo, isOverdue: true, completed: 0 };
+      const { container } = render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+      
+      // Check for clock icon
+      const clockIcon = screen.getByRole('status', { name: /Overdue/i });
+      expect(clockIcon).toBeInTheDocument();
+      expect(clockIcon).toHaveClass('overdue-icon');
+      expect(clockIcon).toHaveTextContent('⏰');
+      
+      // Check for overdue class on card
+      const card = container.querySelector('.todo-card');
+      expect(card).toHaveClass('overdue');
+    });
+
+    it('should not render overdue styling for non-overdue todos', () => {
+      const nonOverdueTodo = { ...mockTodo, isOverdue: false, completed: 0 };
+      const { container } = render(<TodoCard todo={nonOverdueTodo} {...mockHandlers} isLoading={false} />);
+      
+      // Clock icon should not be present
+      expect(screen.queryByRole('status', { name: /Overdue/i })).not.toBeInTheDocument();
+      
+      // Overdue class should not be present
+      const card = container.querySelector('.todo-card');
+      expect(card).not.toHaveClass('overdue');
+    });
+
+    it('should not render overdue styling for completed overdue todos', () => {
+      const completedOverdueTodo = { ...mockTodo, isOverdue: true, completed: 1 };
+      const { container } = render(<TodoCard todo={completedOverdueTodo} {...mockHandlers} isLoading={false} />);
+      
+      // Clock icon should not be present (completion takes precedence)
+      expect(screen.queryByRole('status', { name: /Overdue/i })).not.toBeInTheDocument();
+      
+      // Overdue class should not be present
+      const card = container.querySelector('.todo-card');
+      expect(card).not.toHaveClass('overdue');
+      expect(card).toHaveClass('completed');
+    });
+
+    it('should handle boolean completed values', () => {
+      const overdueTodo = { ...mockTodo, isOverdue: true, completed: false };
+      const { container } = render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+      
+      // Clock icon should be present
+      const clockIcon = screen.getByRole('status', { name: /Overdue/i });
+      expect(clockIcon).toBeInTheDocument();
+      
+      // Overdue class should be present
+      const card = container.querySelector('.todo-card');
+      expect(card).toHaveClass('overdue');
+    });
+
+    it('should not render overdue styling for todos without isOverdue field', () => {
+      const todoNoOverdueField = { ...mockTodo, completed: 0 };
+      // Explicitly remove isOverdue field
+      delete todoNoOverdueField.isOverdue;
+      
+      const { container } = render(<TodoCard todo={todoNoOverdueField} {...mockHandlers} isLoading={false} />);
+      
+      // Clock icon should not be present
+      expect(screen.queryByRole('status', { name: /Overdue/i })).not.toBeInTheDocument();
+      
+      // Overdue class should not be present
+      const card = container.querySelector('.todo-card');
+      expect(card).not.toHaveClass('overdue');
+    });
+  });
+
+  describe('Accessibility for overdue indicators', () => {
+    it('should have proper ARIA label on clock icon', () => {
+      const overdueTodo = { ...mockTodo, isOverdue: true, completed: 0 };
+      render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+      
+      const clockIcon = screen.getByRole('status', { name: /Overdue/i });
+      expect(clockIcon).toHaveAttribute('aria-label', 'Overdue');
+      expect(clockIcon).toHaveAttribute('role', 'status');
+    });
+
+    it('should maintain checkbox accessibility with overdue todos', () => {
+      const overdueTodo = { ...mockTodo, isOverdue: true, completed: 0 };
+      render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+      
+      const checkbox = screen.getByRole('checkbox');
+      expect(checkbox).toHaveAttribute('aria-label');
+      expect(checkbox.getAttribute('aria-label')).toContain('Test Todo');
+    });
+  });
 });

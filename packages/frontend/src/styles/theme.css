@@ -31,6 +31,12 @@
   --radius-md: 8px;
   --radius-lg: 12px;
 
+  /* Overdue Colors (Light Mode) */
+  --overdue-text: #F59E0B;        /* Amber 500 */
+  --overdue-bg: #FEF3C7;          /* Amber 50 - light tint */
+  --overdue-border: #FCD34D;      /* Amber 300 */
+  --overdue-icon: #F59E0B;        /* Amber 500 */
+
   /* Transitions */
   --transition: all 0.2s ease;
 }
@@ -44,6 +50,12 @@
   --color-accent: #bb86fc;
   --text-primary: #ffffff;
   --text-secondary: #b0b0b0;
+
+  /* Overdue Colors (Dark Mode) */
+  --overdue-text: #FCD34D;        /* Amber 300 - lighter for dark bg */
+  --overdue-bg: #78350F;          /* Amber 900 - dark tint */
+  --overdue-border: #F59E0B;      /* Amber 500 */
+  --overdue-icon: #FCD34D;        /* Amber 300 */
   --border-color: #404040;
   --success-color: #66bb6a;
   --danger-color: #ef5350;

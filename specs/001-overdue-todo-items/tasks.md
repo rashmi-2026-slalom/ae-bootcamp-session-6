@@ -24,8 +24,8 @@
 
 **Purpose**: Project initialization (minimal - project already exists)
 
-- [ ] T001 Verify project dependencies are installed and up-to-date in packages/backend/package.json and packages/frontend/package.json
-- [ ] T002 Verify Jest configuration supports fake timers in packages/backend/jest.config.js
+- [X] T001 Verify project dependencies are installed and up-to-date in packages/backend/package.json and packages/frontend/package.json
+- [X] T002 Verify Jest configuration supports fake timers in packages/backend/jest.config.js
 
 ---
 
@@ -47,41 +47,41 @@
 
 ### Backend Implementation - Computed Property (User Story 1)
 
-- [ ] T003 [P] [US1] Add isOverdue() helper function to packages/backend/src/services/todoService.js (date-only comparison logic)
-- [ ] T004 [US1] Update getAllTodos() method in packages/backend/src/services/todoService.js to include computed isOverdue field
-- [ ] T005 [US1] Update getTodoById() method in packages/backend/src/services/todoService.js to include computed isOverdue field
-- [ ] T006 [US1] Update createTodo() method in packages/backend/src/services/todoService.js to include computed isOverdue field
-- [ ] T007 [US1] Update updateTodo() method in packages/backend/src/services/todoService.js to include computed isOverdue field
-- [ ] T008 [US1] Update toggleTodo() method in packages/backend/src/services/todoService.js to include computed isOverdue field
+- [X] T003 [P] [US1] Add isOverdue() helper function to packages/backend/src/services/todoService.js (date-only comparison logic)
+- [X] T004 [US1] Update getAllTodos() method in packages/backend/src/services/todoService.js to include computed isOverdue field
+- [X] T005 [US1] Update getTodoById() method in packages/backend/src/services/todoService.js to include computed isOverdue field
+- [X] T006 [US1] Update createTodo() method in packages/backend/src/services/todoService.js to include computed isOverdue field
+- [X] T007 [US1] Update updateTodo() method in packages/backend/src/services/todoService.js to include computed isOverdue field
+- [X] T008 [US1] Update toggleTodo() method in packages/backend/src/services/todoService.js to include computed isOverdue field
 
 ### Backend Tests - Unit Tests (User Story 1)
 
-- [ ] T009 [P] [US1] Write unit tests for isOverdue() function in packages/backend/__tests__/services/todoService.test.js (edge cases: null, past, present, future, completed)
-- [ ] T010 [P] [US1] Write unit tests for getAllTodos() with isOverdue field in packages/backend/__tests__/services/todoService.test.js
+- [X] T009 [P] [US1] Write unit tests for isOverdue() function in packages/backend/__tests__/services/todoService.test.js (edge cases: null, past, present, future, completed)
+- [X] T010 [P] [US1] Write unit tests for getAllTodos() with isOverdue field in packages/backend/__tests__/services/todoService.test.js
 
 ### Backend Tests - API Integration (User Story 1)
 
-- [ ] T011 [P] [US1] Write API integration test for GET /api/todos with isOverdue field in packages/backend/__tests__/app.test.js
-- [ ] T012 [P] [US1] Write API integration test for GET /api/todos/:id with isOverdue field in packages/backend/__tests__/app.test.js
-- [ ] T013 [P] [US1] Write API integration test for POST /api/todos with isOverdue field in packages/backend/__tests__/app.test.js
-- [ ] T014 [P] [US1] Write API integration test for PUT /api/todos/:id with isOverdue field in packages/backend/__tests__/app.test.js
-- [ ] T015 [P] [US1] Write API integration test for PATCH /api/todos/:id/toggle with isOverdue field in packages/backend/__tests__/app.test.js
+- [X] T011 [P] [US1] Write API integration test for GET /api/todos with isOverdue field in packages/backend/__tests__/app.test.js
+- [X] T012 [P] [US1] Write API integration test for GET /api/todos/:id with isOverdue field in packages/backend/__tests__/app.test.js
+- [X] T013 [P] [US1] Write API integration test for POST /api/todos with isOverdue field in packages/backend/__tests__/app.test.js
+- [X] T014 [P] [US1] Write API integration test for PUT /api/todos/:id with isOverdue field in packages/backend/__tests__/app.test.js
+- [X] T015 [P] [US1] Write API integration test for PATCH /api/todos/:id/toggle with isOverdue field in packages/backend/__tests__/app.test.js
 
 ### Frontend Implementation - Visual Styling (User Story 1)
 
-- [ ] T016 [P] [US1] Add overdue CSS variables (--overdue-text, --overdue-bg, --overdue-border) to packages/frontend/src/styles/theme.css for light and dark modes
-- [ ] T017 [P] [US1] Add overdue class styles (.todo-card.overdue) to packages/frontend/src/App.css or component-specific CSS
-- [ ] T018 [P] [US1] Add clock icon SVG component or import from icon library in packages/frontend/src/components/ (e.g., ClockIcon.js or use existing icon library)
-- [ ] T019 [US1] Update TodoCard component in packages/frontend/src/components/TodoCard.js to display clock icon when isOverdue is true
-- [ ] T020 [US1] Update TodoCard component in packages/frontend/src/components/TodoCard.js to apply overdue styling (amber color + overdue class) when isOverdue is true
-- [ ] T021 [US1] Add ARIA label to clock icon in packages/frontend/src/components/TodoCard.js for screen reader accessibility
+- [X] T016 [P] [US1] Add overdue CSS variables (--overdue-text, --overdue-bg, --overdue-border) to packages/frontend/src/styles/theme.css for light and dark modes
+- [X] T017 [P] [US1] Add overdue class styles (.todo-card.overdue) to packages/frontend/src/App.css or component-specific CSS
+- [X] T018 [P] [US1] Add clock icon SVG component or import from icon library in packages/frontend/src/components/ (e.g., ClockIcon.js or use existing icon library)
+- [X] T019 [US1] Update TodoCard component in packages/frontend/src/components/TodoCard.js to display clock icon when isOverdue is true
+- [X] T020 [US1] Update TodoCard component in packages/frontend/src/components/TodoCard.js to apply overdue styling (amber color + overdue class) when isOverdue is true
+- [X] T021 [US1] Add ARIA label to clock icon in packages/frontend/src/components/TodoCard.js for screen reader accessibility
 
 ### Frontend Tests - Component Tests (User Story 1)
 
-- [ ] T022 [P] [US1] Write TodoCard test for overdue todo rendering in packages/frontend/src/components/__tests__/TodoCard.test.js (verify clock icon and amber styling appear)
-- [ ] T023 [P] [US1] Write TodoCard test for non-overdue todo rendering in packages/frontend/src/components/__tests__/TodoCard.test.js (verify no overdue styling)
-- [ ] T024 [P] [US1] Write TodoCard test for completed overdue todo in packages/frontend/src/components/__tests__/TodoCard.test.js (verify overdue styling does not appear)
-- [ ] T025 [P] [US1] Write TodoCard test for accessibility in packages/frontend/src/components/__tests__/TodoCard.test.js (verify ARIA labels, color contrast via axe-core or manual check)
+- [X] T022 [P] [US1] Write TodoCard test for overdue todo rendering in packages/frontend/src/components/__tests__/TodoCard.test.js (verify clock icon and amber styling appear)
+- [X] T023 [P] [US1] Write TodoCard test for non-overdue todo rendering in packages/frontend/src/components/__tests__/TodoCard.test.js (verify no overdue styling)
+- [X] T024 [P] [US1] Write TodoCard test for completed overdue todo in packages/frontend/src/components/__tests__/TodoCard.test.js (verify overdue styling does not appear)
+- [X] T025 [P] [US1] Write TodoCard test for accessibility in packages/frontend/src/components/__tests__/TodoCard.test.js (verify ARIA labels, color contrast via axe-core or manual check)
 
 **Checkpoint**: User Story 1 complete - overdue todos display with visual indicators
 
@@ -95,9 +95,9 @@
 
 ### Validation & Testing (User Story 2)
 
-- [ ] T026 [P] [US2] Write backend unit test in packages/backend/__tests__/services/todoService.test.js verifying isOverdue() returns false for todos with null dueDate
-- [ ] T027 [P] [US2] Write API integration test in packages/backend/__tests__/app.test.js verifying GET /api/todos returns isOverdue: false for todos without due dates
-- [ ] T028 [P] [US2] Write frontend component test in packages/frontend/src/components/__tests__/TodoCard.test.js verifying todos without due dates never show overdue styling
+- [X] T026 [P] [US2] Write backend unit test in packages/backend/__tests__/services/todoService.test.js verifying isOverdue() returns false for todos with null dueDate
+- [X] T027 [P] [US2] Write API integration test in packages/backend/__tests__/app.test.js verifying GET /api/todos returns isOverdue: false for todos without due dates
+- [X] T028 [P] [US2] Write frontend component test in packages/frontend/src/components/__tests__/TodoCard.test.js verifying todos without due dates never show overdue styling
 
 **Checkpoint**: User Story 2 complete - null due date handling verified
 
@@ -111,10 +111,10 @@
 
 ### Real-time Update Testing (User Story 3)
 
-- [ ] T029 [P] [US3] Write API integration test in packages/backend/__tests__/app.test.js verifying PUT /api/todos/:id returns updated isOverdue when due date changes from future to past
-- [ ] T030 [P] [US3] Write API integration test in packages/backend/__tests__/app.test.js verifying PUT /api/todos/:id returns updated isOverdue when due date changes from past to future
-- [ ] T031 [P] [US3] Write frontend integration test in packages/frontend/src/__tests__/App.test.js verifying TodoCard updates overdue styling after due date modification (using msw to mock API)
-- [ ] T032 [P] [US3] Write frontend integration test in packages/frontend/src/__tests__/App.test.js verifying PATCH /api/todos/:id/toggle updates isOverdue when completed status changes
+- [X] T029 [P] [US3] Write API integration test in packages/backend/__tests__/app.test.js verifying PUT /api/todos/:id returns updated isOverdue when due date changes from future to past
+- [X] T030 [P] [US3] Write API integration test in packages/backend/__tests__/app.test.js verifying PUT /api/todos/:id returns updated isOverdue when due date changes from past to future
+- [X] T031 [P] [US3] Write frontend integration test in packages/frontend/src/__tests__/App.test.js verifying TodoCard updates overdue styling after due date modification (using msw to mock API)
+- [X] T032 [P] [US3] Write frontend integration test in packages/frontend/src/__tests__/App.test.js verifying PATCH /api/todos/:id/toggle updates isOverdue when completed status changes
 
 **Checkpoint**: User Story 3 complete - real-time updates verified
 
@@ -124,14 +124,14 @@
 
 **Purpose**: Final improvements and validation
 
-- [ ] T033 [P] Run all backend tests with coverage report: npm test -- --coverage in packages/backend
-- [ ] T034 [P] Run all frontend tests with coverage report: npm test -- --coverage in packages/frontend
-- [ ] T035 Verify 80% minimum test coverage for modified files in both backend and frontend
-- [ ] T036 Manual accessibility testing: verify WCAG AA color contrast (Amber 500 on light/dark backgrounds) using browser DevTools or online tool
+- [X] T033 [P] Run all backend tests with coverage report: npm test -- --coverage in packages/backend
+- [X] T034 [P] Run all frontend tests with coverage report: npm test -- --coverage in packages/frontend
+- [X] T035 Verify 80% minimum test coverage for modified files in both backend and frontend
+- [X] T036 Manual accessibility testing: verify WCAG AA color contrast (Amber 500 on light/dark backgrounds) using browser DevTools or online tool
 - [ ] T037 Manual cross-browser testing: verify overdue styling in Chrome, Firefox, Safari
 - [ ] T038 Run quickstart validation from specs/001-overdue-todo-items/quickstart.md (create todos with past/present/future dates, verify visual indicators)
-- [ ] T039 Code review: verify constitutional compliance (code quality, simplicity, no duplication)
-- [ ] T040 Update documentation if needed: verify specs/001-overdue-todo-items/README.md or project docs reflect new overdue feature
+- [X] T039 Code review: verify constitutional compliance (code quality, simplicity, no duplication)
+- [X] T040 Update documentation if needed: verify specs/001-overdue-todo-items/README.md or project docs reflect new overdue feature
 
 ---
 
